@@ -1,4 +1,6 @@
+
 import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { IonicPage ,NavController } from 'ionic-angular';
 
 @IonicPage()
@@ -7,9 +9,24 @@ import { IonicPage ,NavController } from 'ionic-angular';
   templateUrl: 'home.html'
 })
 export class HomePage {
+  posts: {
+    ID: number,
+    title: string,
+    content: string,
+    date: string,
+  }[] = [];
 
-  constructor(public navCtrl: NavController) {
+  constructor(
+    public navCtrl: NavController,
+    public http: HttpClient
+  ) {}
 
+  ionViewDidLoad(){
+   this.http
+   .get('https://public-api.wordpress.com/rest/v1.1/sites/ionicjp.wordpress.com/posts/')
+   .subscribe(data => {
+     this.posts = data['posts'];
+    });
   }
 
 }
